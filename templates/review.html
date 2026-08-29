@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chess Review</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <div class="container review-layout">
+      <div class="panel board-panel">
+        <h2>Move {{ current.move_number }} of {{ total }}</h2>
+        <div class="status-row">
+          <span class="chip {{ current.quality }}">{{ current.quality }}</span>
+          <span>{{ current.player }}</span>
+        </div>
+        <div class="board-wrap">
+          {{ current.board_svg|safe }}
+        </div>
+      </div>
+
+      <div class="panel info-panel">
+        <div class="move-header">
+          <h3>{{ current.player }} played {{ current.move_san }}</h3>
+          <p>Best move: {{ current.best_move_san }}</p>
+        </div>
+
+        <div class="stats-grid">
+          <div>
+            <label>Win chance before</label>
+            <strong>{{ current.win_before }}%</strong>
+          </div>
+          <div>
+            <label>Win chance after</label>
+            <strong>{{ current.win_after }}%</strong>
+          </div>
+          <div>
+            <label>Evaluation</label>
+            <strong>{{ current.delta_cp }} cp</strong>
+          </div>
+        </div>
+
+        <div class="coach-box">
+          <h4>Coach</h4>
+          <p>{{ current.coaching }}</p>
+        </div>
+
+        <div class="nav">
+          {% if prev_step is not none %}
+          <a href="{{ url_for('review', step=prev_step) }}" class="button secondary">Previous</a>
+          {% endif %}
+          {% if next_step is not none %}
+          <a href="{{ url_for('review', step=next_step) }}" class="button">Next move</a>
+          {% else %}
+          <div class="summary-box">
+            <h4>Game summary</h4>
+            <ul>
+              <li>Total moves: {{ summary.total_moves }}</li>
+              <li>Blunders: {{ summary.blunders }}</li>
+              <li>Good moves: {{ summary.good_moves }}</li>
+              <li>Accuracy: {{ summary.accuracy }}%</li>
+            </ul>
+          </div>
+          <div class="final-actions">
+            <a href="{{ url_for('review', step=0) }}" class="button secondary">Replay</a>
+            <a href="{{ url_for('index') }}" class="button">New PGN</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

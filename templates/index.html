@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chess Review</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <div class="container slim">
+      <div class="panel">
+        <h1>Paste your PGN</h1>
+        <p>We’ll walk through the game one move at a time and tell you if it was good, bad, or a blunder.</p>
+
+        <form method="post">
+          <textarea name="pgn" rows="16" placeholder="1. e4 e5 2. Nf3 Nc6 ...">{{ request.form.get('pgn', '') }}</textarea>
+          <div class="actions">
+            <button type="submit">Start review</button>
+          </div>
+        </form>
+
+        {% if error %}
+        <div class="error-box">{{ error }}</div>
+        {% endif %}
+      </div>
+    </div>
+  </body>
+</html>
